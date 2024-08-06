@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*set the body font family to poppins */
+
+body {
+  font-family: "Popppins", sans-serif;
+}
+
+.home-section-overlay::after {
+  background-color: rgb(245, 252, 245);
+  content: " ";
+  opacity: 0.9;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
