@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ObjectProps } from "../../types";
 import ButtonComponent from "../tags/button";
-import { useModal, useProduct } from "../../hooks";
+import { useProduct } from "../../hooks";
 
 const CartItemComponent: React.FC<{ data: ObjectProps }> = ({ data }) => {
   //   const { setModal, modal } = useModal();
