@@ -2,12 +2,15 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { headerData } from "../../../data/header-data";
 import LogoComponent from "../../logo";
 import ButtonComponent from "../../tags/button";
+import { useNavigate } from "react-router";
 
 const MainHeader = () => {
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     section && section.scrollIntoView({ behavior: "smooth" });
   };
+
+  const navigate = useNavigate();
   return (
     <header className="flex p-5 items-center shadow-md justify-between">
       <LogoComponent />
@@ -30,6 +33,7 @@ const MainHeader = () => {
         <ButtonComponent
           width="w-fit"
           className="whitespace-nowrap flex items-center gap-2"
+          onClick={() => navigate("/login")}
         >
           <span>
             <Icon icon="charm:git-request" />

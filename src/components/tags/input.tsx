@@ -43,7 +43,7 @@ export const TextInputComponent: React.FC<
           type={inputProps.type}
           value={values[inputProps.name]}
           placeholder={inputProps.placeholder}
-          className={`p-2 rounded-md ${width}  outline-none border border-1 ${inputMode[mode]} focus:border-[0.09rem] ${inputProps.className} `}
+          className={`p-2 rounded-md ${width} placeholder:text-sm  outline-none border border-1 ${inputMode[mode]} focus:border-[0.09rem] ${inputProps.className} `}
         />
         {actionButton}
       </div>

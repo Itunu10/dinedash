@@ -9,8 +9,11 @@ import {
 import { useState } from "react";
 import { connectContents, contactDetails } from "../../data/contact-data";
 import { restaurantSides } from "../../data/home-data";
+import { useNavigate } from "react-router";
+
 const Homepage = () => {
   const [values, setValues] = useState({});
+  const navigate = useNavigate();
   return (
     <div>
       <section className="flex md:flex-row flex-col items-center md:h-[80vh] md:max-w-[90%] mx-auto justify-between">
@@ -24,7 +27,7 @@ const Homepage = () => {
             Whether you're here for a casual meal or a special celebration, we
             promise an atmosphere that's as delightful as the cuisine
           </p>
-          <ButtonComponent width="w-40" className="shadow-md">
+          <ButtonComponent onClick={() => navigate('/login')} width="w-40" className="shadow-md">
             Order now
           </ButtonComponent>
         </div>

@@ -64,3 +64,12 @@ export interface UpdateTypeProps {
   credentials: ObjectProps;
   id: string;
 }
+
+export type ModalType = {
+  isOpenCard: boolean;
+};
+
+export interface ModalContextProps {
+  modal: ModalType;
+  setModal: React.Dispatch<SetStateAction<ModalType>>;
+}
