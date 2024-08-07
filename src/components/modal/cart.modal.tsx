@@ -35,13 +35,12 @@ export const CartModalComponent: React.FC<{
       >
         <ModalOverlay />
         <ModalContent
-          className="bg-white  "
+          className="bg-white w-[35%]  "
           display="flex"
           flexDirection="column"
           justifyContent="center"
           gap="0.1rem"
           padding="0.1rem"
-          maxWidth={"35%"}
         >
           <ModalHeader display="flex" flexDirection="column" gap="0.4rem">
             <h1 className=" text-slate-800 font-semibold">Add to cart</h1>
