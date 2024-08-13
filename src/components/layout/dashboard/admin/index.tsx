@@ -1,11 +1,11 @@
 import { Outlet } from "react-router";
-import DashboardHeader from "./header";
-import DashboardSidebar from "./sidebar";
-import { CartModalComponent } from "../../modal/cart.modal";
-import { useModal } from "../../../hooks";
+import DashboardHeader from "../header";
+import { CartModalComponent } from "../../../modal/cart.modal";
+import { useModal } from "../../../../hooks";
 import { useState } from "react";
+import AdminDashboardSidebar from "./sidebar";
 
-const DashboardLayout = () => {
+const AdminDashboardLayout = () => {
   const { modal, setModal } = useModal();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -18,13 +18,13 @@ const DashboardLayout = () => {
     <>
       <CartModalComponent isOpen={modal.isOpenCard} onClose={onClose} />
       <div className="flex w-full h-screen overflow-hidden">
-        <DashboardSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+        <AdminDashboardSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
         <div className="flex-1 relative overflow-y-scroll noscrollbar">
           <div className="absolute w-full z-10">
             <DashboardHeader isOpen={isOpen} setIsOpen={setIsOpen} />
           </div>
 
-          <main className="p-10 w-full mt-16 overflow-y-scroll h-full  flex-1">
+          <main className="p-4 w-full mt-16 overflow-y-scroll h-full  flex-1">
             <Outlet />
           </main>
         </div>
@@ -33,4 +33,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default AdminDashboardLayout;

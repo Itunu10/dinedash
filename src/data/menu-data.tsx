@@ -5,7 +5,7 @@ import menu4 from "../assets/menu-4.png";
 
 export const menuData = [
   {
-    title: "Main Dash",
+    title: "Main Dish",
     img: menu1,
   },
   {

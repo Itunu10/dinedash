@@ -5,7 +5,7 @@ const DashboardHeaderText: React.FC<{
   description: string;
 }> = ({ title, description }) => {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col mb-5 gap-1">
       <h1 className="text-2xl font-semibold">{title}</h1>
       <p className="text-sm font-light">{description}</p>
     </div>

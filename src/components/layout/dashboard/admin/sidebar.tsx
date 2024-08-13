@@ -1,9 +1,9 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { sidebarData } from "../../../data/sidebar-data";
-import LogoComponent from "../../logo";
+import { sidebarData } from "../../../../data/sidebar-data";
+import LogoComponent from "../../../logo";
 import { Dispatch, SetStateAction } from "react";
 
-const DashboardSiderbar: React.FC<{
+const AdminDashboardSidebar: React.FC<{
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   isOpen: boolean;
 }> = ({ setIsOpen, isOpen }) => {
@@ -22,8 +22,8 @@ const DashboardSiderbar: React.FC<{
       <div className="p-8 ">
         <LogoComponent />
       </div>
-      <nav className="flex flex-col gap-5 my-8">
-        {sidebarData.clients.map((route) => {
+      <nav className="flex flex-col gap-4 my-8">
+        {sidebarData.admin.map((route) => {
           console.log(route.link);
           return (
             <NavLink
@@ -50,4 +50,4 @@ const DashboardSiderbar: React.FC<{
   );
 };
 
-export default DashboardSiderbar;
+export default AdminDashboardSidebar;

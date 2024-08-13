@@ -13,6 +13,14 @@ import TransactionsPage from "../dashboard/client/transactions";
 import EmailVerificationPage from "../pages/auth/verifyEmail";
 import PasswordResetMangement from "../pages/auth/password";
 import ProfilePage from "../dashboard/client/profile";
+import AdminDashboardLayout from "../components/layout/dashboard/admin";
+import AdminDashboardAnalytics from "../dashboard/admin/analytics";
+import AdminProductsPage from "../dashboard/admin/products";
+import AdminAllCustomersPage from "../dashboard/admin/customers";
+import AdminAllStaffPage from "../dashboard/admin/staffs";
+import AdminOrdersPage from "../dashboard/admin/orders";
+import AdminNotificationsPage from "../dashboard/admin/notifications";
+import AdminAllTransactionsPage from "../dashboard/admin/transactions";
 
 const Routes = () => {
   const pageRoutes = [
@@ -86,10 +94,49 @@ const Routes = () => {
       ],
     },
   ];
+
   const adminRoutes = [
     {
       path: "admin",
-      element: <DashboardLayout />,
+      element: <AdminDashboardLayout />,
+      children: [
+        {
+          path: "analytics",
+          element: <AdminDashboardAnalytics />,
+        },
+        {
+          path: "",
+          element: <AdminDashboardAnalytics />,
+        },
+        {
+          path: "products",
+          element: <AdminProductsPage />,
+        },
+        {
+          path: "customers",
+          element: <AdminAllCustomersPage />,
+        },
+        {
+          path: "staff",
+          element: <AdminAllStaffPage />,
+        },
+        {
+          path: "order",
+          element: <AdminOrdersPage />,
+        },
+        {
+          path: "notifications",
+          element: <AdminNotificationsPage />,
+        },
+        {
+          path: "transactions",
+          element: <AdminAllTransactionsPage />,
+        },
+        {
+          path: "profile",
+          element: <ProfilePage />,
+        },
+      ],
     },
   ];
   const router = createBrowserRouter([
