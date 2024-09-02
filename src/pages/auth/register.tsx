@@ -3,7 +3,7 @@ import { TextInputComponent } from "../../components/tags/input";
 import { registerData } from "../../data/login-data";
 import ButtonComponent from "../../components/tags/button";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useApp, useAuth } from "../../hooks";
+import { useApp } from "../../hooks";
 import { useCustomToast } from "../../utils/toast";
 import { useRegisterMutation } from "../../features/auth";
 import { errorHandler } from "../../utils";

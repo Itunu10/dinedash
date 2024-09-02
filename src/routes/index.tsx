@@ -19,7 +19,6 @@ import AdminProductsPage from "../dashboard/admin/products";
 import AdminAllCustomersPage from "../dashboard/admin/customers";
 import AdminAllStaffPage from "../dashboard/admin/staffs";
 import AdminOrdersPage from "../dashboard/admin/orders";
-import AdminNotificationsPage from "../dashboard/admin/notifications";
 import AdminAllTransactionsPage from "../dashboard/admin/transactions";
 import ProtectedRoute from "./protectedRoute";
 

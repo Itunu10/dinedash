@@ -6,7 +6,7 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { useLoginMutation, useLogoutMutation } from "../features/auth";
+import { useLoginMutation } from "../features/auth";
 import { instance } from "../api/client";
 import { LoginRequest } from "../types";
 

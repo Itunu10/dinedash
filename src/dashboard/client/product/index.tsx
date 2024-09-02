@@ -22,7 +22,7 @@ const Productpage = () => {
   console.log(categories, menus);
 
   const [category, setCategory] = useState("all");
-  const [items, setItems] = useState<Array<ObjectProps>>([{}]);
+  const [_, setItems] = useState<Array<ObjectProps>>([{}]);
   useEffect(() => {
     if (category === "all") {
       setItems(allItems);

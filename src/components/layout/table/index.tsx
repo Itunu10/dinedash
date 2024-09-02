@@ -1,4 +1,4 @@
-import { Table, TableContainer, Tbody, Thead, Tr, Th } from "@chakra-ui/react";
+import { Table, TableContainer, Tbody, Thead, Th } from "@chakra-ui/react";
 import React, { ReactNode } from "react";
 
 const TableLayoutComponent: React.FC<{
