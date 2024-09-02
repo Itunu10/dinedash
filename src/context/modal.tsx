@@ -1,9 +1,13 @@
 import { createContext, ReactNode, useState } from "react";
-import { ModalContextProps } from "../../types";
+import { ModalContextProps } from "../types";
 
 const initialState = {
   modal: {
     isOpenCard: false,
+    isOpenAddCategory: false,
+    isOpenAddMenu: false,
+    isOpenDelete: false,
+    isOpenRename: false,
   },
   setModal: () => {},
 };

@@ -4,11 +4,28 @@ import { CartModalComponent } from "../../../modal/cart.modal";
 import { useModal } from "../../../../hooks";
 import { useState } from "react";
 import AdminDashboardSidebar from "./sidebar";
+// import { useGetprofileQuery } from "../../../../features/auth";
 
 const AdminDashboardLayout = () => {
   const { modal, setModal } = useModal();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  // const navigate = useNavigate();
+
+  // const { logout } = useAuth();
+
+  // const { data } = useGetprofileQuery();
+  // console.log(data);
+
+  // useEffect(() => {
+  //   if (data?.data) {
+  //     if (data?.data?.createdBy?.type !== "super") {
+  //       logout();
+  //       navigate("/login");
+  //     }
+  //   }
+  // }, [data]);
 
   const onClose = () => {
     setModal({ ...modal, isOpenCard: !modal.isOpenCard });

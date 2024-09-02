@@ -1,9 +1,10 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
+// import { Icon } from "@iconify/react/dist/iconify.js";
 import DashboardHeaderText from "../../../components/header/dashboard";
-import ButtonComponent from "../../../components/tags/button";
+// import ButtonComponent from "../../../components/tags/button";
+import { EmptySectionComponent } from "../../../components/placeholder/empty";
 
 const AdminAllStaffPage = () => {
-  const staffs = new Array(5).fill(0);
+  // const staffs = new Array(5).fill(0);
   return (
     <div>
       <DashboardHeaderText
@@ -11,7 +12,9 @@ const AdminAllStaffPage = () => {
         description="View list of all staffs"
       />
 
-      <div className="flex justify-end mb-4">
+      <EmptySectionComponent title="staffs" />
+
+      {/* <div className="flex justify-end mb-4">
         <ButtonComponent width="w-40">Add Staff</ButtonComponent>
       </div>
       <section className="grid md:grid-cols-4 grid-cols-2 md:gap-8 gap-4">
@@ -33,7 +36,7 @@ const AdminAllStaffPage = () => {
             </div>
           );
         })}
-      </section>
+      </section> */}
     </div>
   );
 };

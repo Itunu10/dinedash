@@ -5,7 +5,7 @@ import ButtonComponent from "../../tags/button";
 import { useNavigate } from "react-router";
 
 const MainHeader = () => {
-  const scrollToSection = (sectionId: string) => {
+  const scrollToSection = (sectionId: string): void => {
     const section = document.getElementById(sectionId);
     section && section.scrollIntoView({ behavior: "smooth" });
   };

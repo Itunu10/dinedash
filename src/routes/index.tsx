@@ -21,6 +21,7 @@ import AdminAllStaffPage from "../dashboard/admin/staffs";
 import AdminOrdersPage from "../dashboard/admin/orders";
 import AdminNotificationsPage from "../dashboard/admin/notifications";
 import AdminAllTransactionsPage from "../dashboard/admin/transactions";
+import ProtectedRoute from "./protectedRoute";
 
 const Routes = () => {
   const pageRoutes = [
@@ -61,35 +62,40 @@ const Routes = () => {
   const dashboardRoutes = [
     {
       path: "dashboard",
-      element: <DashboardLayout />,
+      element: <ProtectedRoute />,
       children: [
         {
-          path: "",
-          element: <Productpage />,
-        },
-        {
-          path: "products",
-          element: <Productpage />,
-        },
-        {
-          path: "order",
-          element: <OrderPage />,
-        },
-        {
-          path: "cart",
-          element: <CartPage />,
-        },
-        {
-          path: "notifications",
-          element: <NotificationsPage />,
-        },
-        {
-          path: "transactions",
-          element: <TransactionsPage />,
-        },
-        {
-          path: "profile",
-          element: <ProfilePage />,
+          element: <DashboardLayout />,
+          children: [
+            {
+              path: "",
+              element: <Productpage />,
+            },
+            {
+              path: "products",
+              element: <Productpage />,
+            },
+            {
+              path: "order",
+              element: <OrderPage />,
+            },
+            {
+              path: "cart",
+              element: <CartPage />,
+            },
+            {
+              path: "notifications",
+              element: <NotificationsPage />,
+            },
+            {
+              path: "transactions",
+              element: <TransactionsPage />,
+            },
+            {
+              path: "profile",
+              element: <ProfilePage />,
+            },
+          ],
         },
       ],
     },
@@ -98,43 +104,48 @@ const Routes = () => {
   const adminRoutes = [
     {
       path: "admin",
-      element: <AdminDashboardLayout />,
+      element: <ProtectedRoute />,
       children: [
         {
-          path: "analytics",
-          element: <AdminDashboardAnalytics />,
-        },
-        {
-          path: "",
-          element: <AdminDashboardAnalytics />,
-        },
-        {
-          path: "products",
-          element: <AdminProductsPage />,
-        },
-        {
-          path: "customers",
-          element: <AdminAllCustomersPage />,
-        },
-        {
-          path: "staff",
-          element: <AdminAllStaffPage />,
-        },
-        {
-          path: "order",
-          element: <AdminOrdersPage />,
-        },
-        {
-          path: "notifications",
-          element: <AdminNotificationsPage />,
-        },
-        {
-          path: "transactions",
-          element: <AdminAllTransactionsPage />,
-        },
-        {
-          path: "profile",
-          element: <ProfilePage />,
+          element: <AdminDashboardLayout />,
+          children: [
+            {
+              path: "analytics",
+              element: <AdminDashboardAnalytics />,
+            },
+            {
+              path: "",
+              element: <AdminDashboardAnalytics />,
+            },
+            {
+              path: "products",
+              element: <AdminProductsPage />,
+            },
+            {
+              path: "customers",
+              element: <AdminAllCustomersPage />,
+            },
+            {
+              path: "staff",
+              element: <AdminAllStaffPage />,
+            },
+            {
+              path: "order",
+              element: <AdminOrdersPage />,
+            },
+            {
+              path: "notifications",
+              element: <NotificationsPage />,
+            },
+            {
+              path: "transactions",
+              element: <AdminAllTransactionsPage />,
+            },
+            {
+              path: "profile",
+              element: <ProfilePage />,
+            },
+          ],
         },
       ],
     },

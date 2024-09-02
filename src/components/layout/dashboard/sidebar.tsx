@@ -2,6 +2,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { sidebarData } from "../../../data/sidebar-data";
 import LogoComponent from "../../logo";
 import { Dispatch, SetStateAction } from "react";
+import { useAuth } from "../../../hooks";
 
 const DashboardSiderbar: React.FC<{
   setIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -12,7 +13,8 @@ const DashboardSiderbar: React.FC<{
     .filter((p) => p !== "");
 
   const path = location[1] === undefined ? "products" : location[1];
-  console.log({ location, path });
+
+  const { logout } = useAuth();
   return (
     <aside
       className={`h-screen md:w-[16%] w-[50%] md:relative ${
@@ -42,7 +44,11 @@ const DashboardSiderbar: React.FC<{
         })}
       </nav>
       <nav className=" justify-self-end text-center">
-        <NavLink className={"text-red-600"} to={"/login"}>
+        <NavLink
+          onClick={() => logout()}
+          className={"text-red-600"}
+          to={"/login"}
+        >
           Logout
         </NavLink>
       </nav>

@@ -5,6 +5,9 @@ import {
   TransactionStatus,
 } from "../../../data/transactions-data";
 import DashboardHeaderText from "../../../components/header/dashboard";
+import { useGetnotificationsQuery } from "../../../features/notifications";
+import { SectionLoader } from "../../../components/loader";
+import { EmptySectionComponent } from "../../../components/placeholder/empty";
 
 const statusColors: Record<TransactionStatus, string> = {
   Pending: "bg-yellow-200",
@@ -14,6 +17,8 @@ const statusColors: Record<TransactionStatus, string> = {
 };
 
 const Transactionspage: React.FC = () => {
+  const { data: transactions, isLoading } = useGetnotificationsQuery();
+
   return (
     <>
       <div className="mb-5 ">
@@ -22,38 +27,44 @@ const Transactionspage: React.FC = () => {
           description="View your past and recent transactions"
         />
       </div>
-      <div className=" md:overflow-x-hidden overflow-x-scroll ">
-        <Table variant="striped" className="w-full border border-gray-300">
-          <Thead>
-            <Tr>
-              <Th> Reference</Th>
-              <Th>Order ID</Th>
-              <Th>Amount</Th>
-              <Th>Status</Th>
-              <Th>Date</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {transactionsData.map((transaction) => (
-              <Tr key={transaction.transactionReference}>
-                <Td>{transaction.transactionReference}</Td>
-                <Td>{transaction.orderId}</Td>
-                <Td>${transaction.amount.toFixed(2)}</Td>
-                <Td>
-                  <span
-                    className={`px-2 py-1 rounded ${
-                      statusColors[transaction.status]
-                    }`}
-                  >
-                    {transaction.status}
-                  </span>
-                </Td>
-                <Td>{new Date(transaction.date).toLocaleString()}</Td>
+      {isLoading ? (
+        <SectionLoader />
+      ) : transactions?.data?.docs?.length === 0 ? (
+        <EmptySectionComponent title="transactions" />
+      ) : (
+        <div className=" md:overflow-x-hidden overflow-x-scroll ">
+          <Table variant="striped" className="w-full border border-gray-300">
+            <Thead>
+              <Tr>
+                <Th> Reference</Th>
+                <Th>Order ID</Th>
+                <Th>Amount</Th>
+                <Th>Status</Th>
+                <Th>Date</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </div>
+            </Thead>
+            <Tbody>
+              {transactionsData.map((transaction) => (
+                <Tr key={transaction.transactionReference}>
+                  <Td>{transaction.transactionReference}</Td>
+                  <Td>{transaction.orderId}</Td>
+                  <Td>${transaction.amount.toFixed(2)}</Td>
+                  <Td>
+                    <span
+                      className={`px-2 py-1 rounded ${
+                        statusColors[transaction.status]
+                      }`}
+                    >
+                      {transaction.status}
+                    </span>
+                  </Td>
+                  <Td>{new Date(transaction.date).toLocaleString()}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </div>
+      )}
     </>
   );
 };

@@ -8,6 +8,8 @@ const ItemCardComponent: React.FC<{ data: ObjectProps }> = ({ data }) => {
 
   const { setData } = useProduct();
 
+  console.log(data);
+
   return (
     <>
       <div
@@ -15,14 +17,14 @@ const ItemCardComponent: React.FC<{ data: ObjectProps }> = ({ data }) => {
         className="bg-white h-full  p-5 rounded-md shadow-md hover:shadow-xl"
       >
         <img
-          src={data.image}
-          alt={data.name}
+          src={data?.image?.url}
+          alt={data?.name}
           className="w-full h-56 bg-primary-light object-cover"
         />
-        <h1 className="text-sm font-semibold my-2">{data.name}</h1>
-        <p className="text-sm">{data.description}</p>
+        <h1 className="text-sm font-semibold my-2">{data?.name}</h1>
+        <p className="text-sm">{data?.description}</p>
         <span className="text-sm text-primary-default font-semibold">
-          ${data.price}
+          ${data?.price}
         </span>
         <div className="flex items-center gap-3 justify-between mt-6">
           <div></div>

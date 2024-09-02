@@ -1,7 +1,47 @@
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import AuthHeader from "./header";
+import { useAuth } from "../../../hooks";
+import { useEffect } from "react";
+import { instance } from "../../../api/client";
 
 const AuthLayout = () => {
+  const { isAuthenticated } = useAuth();
+
+  const navigate = useNavigate();
+
+  const getprofile = async () => {
+    const response = await instance.get("/user/profile?_populate=createdBy");
+    return response; // No need to use `await` here again since it is already awaited.
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const fetchProfile = async () => {
+        try {
+          const profile = await getprofile();
+
+          if (profile.status === 200) {
+            const isAdmin = profile?.data?.data?.createdBy?.type === "super";
+
+            if (isAdmin) {
+              navigate("/admin", {
+                replace: true,
+              });
+            } else {
+              navigate("/dashboard", {
+                replace: true,
+              });
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+        }
+      };
+
+      fetchProfile();
+    }
+  }, [isAuthenticated, navigate]);
+
   return (
     <div className="">
       <AuthHeader />

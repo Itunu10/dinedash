@@ -2,15 +2,43 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { TextInputComponent } from "../../components/tags/input";
 import ButtonComponent from "../../components/tags/button";
 import { NavLink } from "react-router-dom";
+import { useRequestemailverificationMutation } from "../../features/auth";
+import { useCustomToast } from "../../utils/toast";
+import { errorHandler } from "../../utils";
 
 const RequestResetOTP: React.FC<{
   setStep: Dispatch<SetStateAction<string>>;
 }> = ({ setStep }) => {
   const [values, setValues] = useState({});
 
-  const handleReqeustOTP = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const [requestotp, { isLoading }] = useRequestemailverificationMutation();
+
+  const showToast = useCustomToast();
+
+  const handleReqeustOTP = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setStep("reset");
+    try {
+      const response = await requestotp(values);
+      if (response.error) {
+        throw response.error;
+      }
+      showToast({
+        status: "success",
+        title: "Success",
+        description:
+          "We've sent you a verification email. Please check your inbox.",
+      });
+
+      setStep("reset");
+    } catch (error) {
+      const description = errorHandler(error);
+      showToast({
+        title: "Error",
+        description,
+        status: "error",
+        duration: 3000,
+      });
+    }
   };
 
   return (
@@ -29,6 +57,7 @@ const RequestResetOTP: React.FC<{
           placeholder="Enter email address"
           values={values}
           setValues={setValues}
+          showValidate={false}
         />
       </div>
       <div className="flex flex-col">
@@ -36,6 +65,7 @@ const RequestResetOTP: React.FC<{
           onClick={handleReqeustOTP}
           width="w-36"
           className="self-end"
+          isLoading={isLoading}
         >
           Continue
         </ButtonComponent>

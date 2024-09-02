@@ -3,13 +3,59 @@ import { TextInputComponent } from "../../components/tags/input";
 import { registerData } from "../../data/login-data";
 import ButtonComponent from "../../components/tags/button";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useApp, useAuth } from "../../hooks";
+import { useCustomToast } from "../../utils/toast";
+import { useRegisterMutation } from "../../features/auth";
+import { errorHandler } from "../../utils";
 
 const Registerpage = () => {
   const [values, setValues] = useState({});
+
+  const {
+    app: { error },
+  } = useApp();
+
+  const [register, { isLoading }] = useRegisterMutation();
+
+  const showToast = useCustomToast();
+
+  console.log(error);
+
   const navigate = useNavigate();
-  const hanldleRegister = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const hanldleRegister = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    navigate("/verify-email");
+    try {
+      console.log(error);
+      if (error !== undefined) {
+        const err = Object.values(error)[0];
+        showToast({
+          status: "error",
+          description: err,
+          title: "Validation Error",
+        });
+
+        return;
+      }
+      const response = await register(values);
+      if (response.error) {
+        throw response.error;
+      }
+      showToast({
+        status: "success",
+        description:
+          "Registration successful, please check your email for verification code",
+        title: "Registration Successful",
+      });
+      navigate("/verify-email");
+    } catch (error) {
+      const description = errorHandler(error);
+      showToast({
+        status: "error",
+        description: description,
+        title: "Error",
+      });
+    }
+    console.log("register");
   };
   return (
     <div>
@@ -35,6 +81,7 @@ const Registerpage = () => {
       </ul>
       <div className="flex flex-col">
         <ButtonComponent
+          isLoading={isLoading}
           onClick={hanldleRegister}
           width="w-36"
           className="self-end"

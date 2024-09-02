@@ -3,13 +3,13 @@ export const passwordData = [
     label: "New Password",
     type: "password",
     placeholder: "enter new password",
-    name: "password",
+    name: "newPassword",
   },
   {
     label: "Old Password",
     type: "password",
     placeholder: "enter old password",
-    name: "password",
+    name: "oldPassword",
   },
 ];
 
@@ -34,13 +34,6 @@ export const profileData = [
     placeholder: "enter your email address",
     name: "email",
     value: "john@example.com",
-  },
-  {
-    label: "Password",
-    type: "password",
-    placeholder: "enter your password",
-    name: "passowrd",
-    value: "@Test1234",
   },
 
   {

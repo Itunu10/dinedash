@@ -3,15 +3,43 @@ import { TextInputComponent } from "../../components/tags/input";
 import ButtonComponent from "../../components/tags/button";
 import { useNavigate } from "react-router-dom";
 import { passwordResetData } from "../../data/login-data";
+import { useResetforgotpasswordMutation } from "../../features/auth";
+import { useCustomToast } from "../../utils/toast";
+import { errorHandler } from "../../utils";
 
 const ResetPassword: React.FC = () => {
   const [values, setValues] = useState({});
 
   const navigate = useNavigate();
 
-  const handleResetPassword = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const [requestotp, { isLoading }] = useResetforgotpasswordMutation();
+
+  const showToast = useCustomToast();
+
+  const handleReqeustOTP = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    navigate("/login");
+
+    try {
+      const response = await requestotp(values);
+      if (response.error) {
+        throw response.error;
+      }
+      showToast({
+        status: "success",
+        title: "Success",
+        description: "Pasword changed successfully",
+      });
+
+      navigate("/login");
+    } catch (error) {
+      const description = errorHandler(error);
+      showToast({
+        title: "Error",
+        description,
+        status: "error",
+        duration: 3000,
+      });
+    }
   };
 
   return (
@@ -36,7 +64,8 @@ const ResetPassword: React.FC = () => {
       </ul>
       <div className="flex flex-col">
         <ButtonComponent
-          onClick={handleResetPassword}
+          onClick={handleReqeustOTP}
+          isLoading={isLoading}
           width="w-36"
           className="self-end"
         >

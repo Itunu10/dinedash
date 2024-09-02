@@ -12,15 +12,16 @@ const ButtonComponent: React.FC<ButtonPropsTypes> = ({
   children,
   mode = "primary",
   width = "w-full",
+  isLoading = false,
   ...buttonProps
 }) => {
   return (
     <button
-      disabled={buttonProps.disabled}
+      disabled={buttonProps.disabled || isLoading}
       onClick={buttonProps.onClick}
       className={` px-3 py-2 rounded-md ${width} ${buttonMode[mode]} disabled:text-white disabled:font-semibold disabled:bg-gray-300 hover:opacity-80 disabled:border-gray-400 disabled:cursor-not-allowed hover:shadow-sm transition-all  ${buttonProps.className}`}
     >
-      {children}
+      {isLoading ? "loading..." : children}
     </button>
   );
 };

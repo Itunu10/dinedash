@@ -2,15 +2,47 @@ import { useState } from "react";
 import { TextInputComponent } from "../../components/tags/input";
 import ButtonComponent from "../../components/tags/button";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useVerifyemailMutation } from "../../features/auth";
+import { ObjectProps } from "../../types";
+import { useCustomToast } from "../../utils/toast";
+import { errorHandler } from "../../utils";
 
 const EmailVerificationPage = () => {
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState<ObjectProps>({});
+
+  const [verifyemail, { isLoading }] = useVerifyemailMutation();
+  const showToast = useCustomToast();
 
   const navigate = useNavigate();
 
-  const handleSubmitOTP = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmitOTP = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    navigate("/dashboard");
+    try {
+      if (!values.token) {
+        showToast({
+          description: "Please enter OTP",
+          title: "Validation Error",
+          status: "error",
+        });
+      }
+      const response = await verifyemail(values);
+      if (response.error) {
+        throw response.error;
+      }
+      showToast({
+        description: "Email verification successful",
+        title: "Success",
+        status: "success",
+      });
+      navigate("/dashboard");
+    } catch (error) {
+      const description = errorHandler(error);
+      showToast({
+        description,
+        title: "Error",
+        status: "error",
+      });
+    }
   };
 
   return (
@@ -24,7 +56,7 @@ const EmailVerificationPage = () => {
       <div className="flex flex-col gap-4 my-5">
         <TextInputComponent
           mode="light"
-          name="otp"
+          name="token"
           label="Enter OTP"
           placeholder="Enter OTP"
           values={values}
@@ -33,6 +65,7 @@ const EmailVerificationPage = () => {
       </div>
       <div className="flex flex-col">
         <ButtonComponent
+          isLoading={isLoading}
           onClick={handleSubmitOTP}
           width="w-36"
           className="self-end"

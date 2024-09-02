@@ -5,7 +5,7 @@ import {
   SetStateAction,
   useState,
 } from "react";
-import { ObjectProps } from "../../types";
+import { ObjectProps } from "../types";
 
 const initialState = {
   data: {},

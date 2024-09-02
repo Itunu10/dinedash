@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
-import { orderData, OrderStatus } from "../../../data/order-data";
 import ButtonComponent from "../../../components/tags/button";
 import DashboardHeaderText from "../../../components/header/dashboard";
+import { useGetordersQuery } from "../../../features/order";
+import { ObjectProps } from "../../../types";
+import { shortenText } from "../../../utils";
 
-const statusColors: Record<OrderStatus, string> = {
+const statusColors: Record<string, string> = {
   Pending: "bg-yellow-200",
   Completed: "bg-green-200",
   Cancelled: "bg-red-200",
@@ -12,6 +14,18 @@ const statusColors: Record<OrderStatus, string> = {
 };
 
 const AdminOrdersPage: React.FC = () => {
+  const { data } = useGetordersQuery();
+
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    if (data?.data) {
+      setOrders(data?.data?.docs);
+    }
+  }, [data]);
+
+  console.log(orders);
+
   return (
     <div className="">
       <div className="mb-5">
@@ -24,32 +38,33 @@ const AdminOrdersPage: React.FC = () => {
         <Table variant="striped" className="w-full border border-gray-300">
           <Thead>
             <Tr>
-              <Th>Name</Th>
               <Th> ID</Th>
               <Th>Price</Th>
               <Th>Order Date</Th>
               <Th>Status</Th>
               <Th>Email</Th>
+              <Th>Address</Th>
               <Th>Action</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {orderData.map((order) => (
-              <Tr key={order.orderId}>
-                <Td>{order.category}</Td>
-                <Td>{order.orderId}</Td>
-                <Td>${order.price.toFixed(2)}</Td>
-                <Td>{new Date(order.orderDate).toLocaleString()}</Td>
+            {orders?.map((order: ObjectProps) => (
+              <Tr key={order?._id}>
+                <Td>{shortenText(order?._id, 10)}</Td>
+                <Td>{order?.totalPrice}</Td>
+                {/* <Td>${order.price.toFixed(2)}</Td> */}
+                <Td>{new Date(order?.createdAt).toLocaleString()}</Td>
                 <Td>
                   <span
                     className={`px-2 py-1 rounded ${
                       statusColors[order.status]
                     }`}
                   >
-                    {order.status}
+                    {order?.status}
                   </span>
                 </Td>
-                <Td>{order.location}</Td>
+                <Td> {shortenText(order?.createdBy?.email, 10)}</Td>
+                <Td> {shortenText(order?.address, 10)}</Td>
                 <Td>
                   <ButtonComponent mode="light">Dispute</ButtonComponent>
                 </Td>

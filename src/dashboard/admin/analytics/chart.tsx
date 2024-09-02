@@ -1,6 +1,8 @@
 import ReactECharts from "echarts-for-react";
 import { ObjectProps } from "../../../types";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useGetordersQuery } from "../../../features/order";
+import { useEffect, useState } from "react";
 
 const ChartSection = () => {
   const getBarChartOptions = () => {
@@ -141,13 +143,35 @@ const ChartSection = () => {
       ],
     };
   };
+
+  const { data: orders } = useGetordersQuery();
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    if (orders?.data) {
+      const totalOrders = orders?.data?.docs?.reduce(
+        (acc: number, curr: ObjectProps) => acc + curr?.totalPrice,
+        0
+      );
+
+      setTotal(totalOrders);
+    }
+  }, [orders]);
+
+  console.log(orders);
+
   return (
     <section className="my-10 flex md:flex-row flex-col w-full gap-16">
       <div className="md:w-[75%]">
         <div className="flex justify-between">
           <div className="flex flex-col gap-2">
             <h2 className="text-sm">Total Orders</h2>
-            <h1 className="font-medium">₦ 77,852,000</h1>
+            <h1 className="font-medium">
+              {Intl.NumberFormat("en-Us", {
+                style: "currency",
+                currency: "USD",
+              }).format(total)}
+            </h1>
             <p className="text-xs flex items-center gap-2 text-gray-400">
               <span className="text-primary-default">
                 <Icon icon="formkit:arrowup" />

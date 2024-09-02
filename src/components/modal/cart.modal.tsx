@@ -13,6 +13,10 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import ButtonComponent from "../tags/button";
 import { useProduct } from "../../hooks";
 import { useState } from "react";
+import { errorHandler } from "../../utils";
+import { useCustomToast } from "../../utils/toast";
+import { useCreatecartMutation } from "../../features/cart";
+import { useNavigate } from "react-router";
 
 export const CartModalComponent: React.FC<{
   isOpen: boolean;
@@ -21,8 +25,37 @@ export const CartModalComponent: React.FC<{
   const { data } = useProduct();
   const [quantity, setQuantity] = useState(1);
 
-  const handleAddToCart = () => {
-    onClose();
+  const [createcart, { isLoading }] = useCreatecartMutation();
+
+  const showToast = useCustomToast();
+
+  const navigate = useNavigate();
+
+  const handleAddToCart = async () => {
+    try {
+      const response = await createcart({
+        menuId: data?._id,
+        quantity: +quantity,
+      });
+      if (response.error) {
+        throw response.error;
+      }
+      showToast({
+        title: "Success",
+        description: "Item added to cart",
+        status: "success",
+      });
+
+      onClose();
+      navigate("/dashboard/cart");
+    } catch (error) {
+      const description = errorHandler(error);
+      showToast({
+        title: "Error",
+        description,
+        status: "error",
+      });
+    }
   };
 
   return (
@@ -53,14 +86,14 @@ export const CartModalComponent: React.FC<{
           <ModalBody>
             <div>
               <img
-                src={data.image}
-                alt={data.name}
+                src={data?.image?.url}
+                alt={data?.name}
                 className="w-full h-56 bg-primary-light object-cover"
               />
-              <h1 className="text-sm font-semibold my-2">{data.name}</h1>
-              <p className="text-sm">{data.description}</p>
+              <h1 className="text-sm font-semibold my-2">{data?.name}</h1>
+              <p className="text-sm">{data?.description}</p>
               <span className="text-sm text-primary-default font-semibold">
-                ${data.price}
+                ${data?.price}
               </span>
             </div>
           </ModalBody>
@@ -83,6 +116,7 @@ export const CartModalComponent: React.FC<{
               <span onClick={() => setQuantity(quantity + 1)}>+</span>
             </ButtonComponent>
             <ButtonComponent
+              isLoading={isLoading}
               onClick={handleAddToCart}
               width="w-36"
               mode="light"

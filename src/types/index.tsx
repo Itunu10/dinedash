@@ -34,16 +34,14 @@ export interface InputPropsTypes<T>
   customValidation?: ValidationRule[];
   handleInputChange?: (name: string, value: string) => void;
   formErrors?: ObjectProps;
+  showValidate?: boolean;
 }
 
 export interface ButtonPropsTypes
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   mode?: "dark" | "primary" | "light" | "danger" | "default";
   width?: string;
-}
-
-export interface AuthResponse extends AxiosResponse {
-  token: string;
+  isLoading?: boolean;
 }
 
 export interface QueryResponse extends AxiosResponse {
@@ -67,9 +65,22 @@ export interface UpdateTypeProps {
 
 export type ModalType = {
   isOpenCard: boolean;
+  isOpenAddCategory: boolean;
+  isOpenAddMenu: boolean;
+  isOpenDelete: boolean;
+  isOpenRename: boolean;
 };
 
 export interface ModalContextProps {
   modal: ModalType;
   setModal: React.Dispatch<SetStateAction<ModalType>>;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface AuthResponse extends AxiosResponse {
+  token: string;
 }

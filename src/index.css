@@ -4,8 +4,25 @@
 
 /*set the body font family to poppins */
 
+body,
+* {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  /* color: #344054; */
+}
+
+/* import the cabinet grotest font */
+
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("../src/assets//fonts//CabinetGrotesk/CabinetGrotesk-Regular.otf");
+}
+
+.font-grotesk {
+  font-family: "Cabinet Grotesk", sans-serif;
+}
+
 body {
-  font-family: "Popppins", sans-serif;
   background-color: #f1f5f9;
 }
 

@@ -18,19 +18,13 @@ export const passwordResetData = [
     label: "OTP",
     type: "text",
     placeholder: "enter the otp sent to your email adress",
-    name: "email",
+    name: "token",
   },
   {
     label: "Password",
     type: "email",
     placeholder: "enter password",
-    name: "email",
-  },
-  {
-    label: "Confirm Password",
-    type: "email",
-    placeholder: "confirm your password",
-    name: "email",
+    name: "newPassword",
   },
 ];
 
@@ -57,7 +51,7 @@ export const registerData = [
     label: "Password",
     type: "password",
     placeholder: "enter your password",
-    name: "passowrd",
+    name: "password",
   },
 
   {

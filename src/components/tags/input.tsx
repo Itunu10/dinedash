@@ -1,7 +1,25 @@
-import React, { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 // import { InputPropsTypes, Obj } from "../../types";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { InputPropsTypes, ObjectProps } from "../../types";
+import { validate } from "../../utils/validate";
+import { useApp } from "../../hooks";
+
+import {
+  Box,
+  Button,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/react";
 
 const inputMode = {
   light: "border-dark-lighter focus:border-gray-500",
@@ -18,17 +36,53 @@ export const TextInputComponent: React.FC<
   mode = "primary",
   width = "w-full",
   actionButton,
-  handleInputChange,
-  formErrors,
+  showValidate = true,
   ...inputProps
 }) => {
+  const [isTouched, setIsTouched] = useState(false);
+  const [errorObject, setErrorObject] = useState<ObjectProps>({});
+
+  const { app, setApp } = useApp();
+
+  useEffect(() => {
+    setApp({
+      ...app,
+      error: Object.keys(errorObject).length > 0 ? errorObject : undefined,
+    });
+  }, [errorObject]);
+
+  const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsTouched(true);
+    if (showValidate) {
+      const error = validate(e.target.name, values);
+      error &&
+        Object.values(error).length >= 1 &&
+        setErrorObject((prevErrorObject: ObjectProps) => ({
+          ...prevErrorObject,
+          [e.target.name]: error[e.target.name],
+        }));
+    }
+  };
+
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValues((prevValues: ObjectProps) => ({
       ...prevValues,
       [inputProps.name]: e.target?.value,
     }));
-    handleInputChange && handleInputChange(e.target.name, e.target.value);
+    if (showValidate) {
+      if (isTouched) {
+        const error = validate(e.target.name, values);
+
+        error &&
+          Object.values(error).length >= 1 &&
+          setErrorObject((prevErrorObject: ObjectProps) => ({
+            ...prevErrorObject,
+            [e.target.name]: error[e.target.name],
+          }));
+      }
+    }
   };
+
   return (
     <div className="flex flex-col gap-2">
       {label && (
@@ -43,18 +97,15 @@ export const TextInputComponent: React.FC<
           type={inputProps.type}
           value={values[inputProps.name]}
           placeholder={inputProps.placeholder}
+          onBlur={onBlur}
           className={`p-2 rounded-md ${width} placeholder:text-sm   outline-none border border-1 ${inputMode[mode]} focus:border-[0.09rem] ${inputProps.className} `}
         />
         {actionButton}
       </div>
 
-      {formErrors &&
-        Object.values(formErrors).filter((err) => !err.isValid).length > 0 &&
-        !formErrors[inputProps.name].isValid && (
-          <p className="text-red-500 text-sm">
-            {formErrors[inputProps.name].messages[0]}
-          </p>
-        )}
+      {errorObject && errorObject[inputProps?.name] && (
+        <p className="text-red-500 text-sm">{errorObject[inputProps.name]}</p>
+      )}
     </div>
   );
 };
@@ -107,7 +158,7 @@ export const TextAreaComponent: React.FC<TextAreaProps> = ({
   ...inputProps
 }) => {
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setValues({ [inputProps.name]: e.target?.value });
+    setValues({ ...values, [inputProps.name]: e.target?.value });
   };
   return (
     <div className="flex flex-col gap-2">
@@ -123,66 +174,83 @@ export const TextAreaComponent: React.FC<TextAreaProps> = ({
   );
 };
 
-interface SelectProps extends InputPropsTypes<any> {
-  options: Array<{
-    title: string;
-    value: string;
-  }>;
+interface SelectMenuComponentProps<T extends ObjectProps> {
+  menus: T[];
+  initialValue?: string;
+  width?: string;
+  label?: string;
+  values: ObjectProps;
+  setValues: Dispatch<SetStateAction<ObjectProps | any>>;
+  name: string;
+  handleInputChange?: (name: string, value: string) => void;
+  clickHandler?: () => void;
 }
 
-export const SelectInputComponent: React.FC<SelectProps> = ({
-  label,
-  setValues,
-  values,
-  mode = "primary",
+export const SelectMenuComponent = <T extends ObjectProps>({
+  menus = [],
+  initialValue = "select item",
   width = "w-full",
-  ...inputProps
-}) => {
-  const [openOptions, setOpenOptions] = useState<boolean>(false);
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValues((prevValues: ObjectProps) => ({
-      ...prevValues,
-      [inputProps.name]: e.target?.value,
-    }));
+  label,
+  values,
+  setValues,
+  name,
+  handleInputChange,
+  clickHandler,
+}: SelectMenuComponentProps<T>) => {
+  const [menuValue, setMenuValue] = useState(initialValue);
+
+  const onClick = (value: string, label: string) => {
+    setMenuValue(label);
+    handleInputChange && handleInputChange(name, value);
+    setValues({ ...values, [name]: value });
   };
   return (
-    <div className="flex flex-col ">
-      {label && (
-        <label className="text-black font-semibold text-base">{label}</label>
-      )}
-      <div className="relative">
-        <input
-          onChange={onChange}
-          name={inputProps.name}
-          type={inputProps.type}
-          placeholder={inputProps.placeholder}
-          value={values[inputProps.name]}
-          className={`p-2 rounded-t-md ${width} outline-none border border-1 ${inputMode[mode]} focus:border-[0.09rem] ${inputProps.className} `}
-        />
-        <span
-          onClick={() => setOpenOptions(!openOptions)}
-          className="absolute right-2 cursor-pointer top-1/2 transform -translate-y-1/2"
-        >
-          <Icon icon="bitcoin-icons:caret-up-outline" />
-        </span>
-      </div>
-      {openOptions && (
-        <div className="bg-primary-dark rounded-b-md h-36 overflow-y-scroll sidebar-scroll   flex flex-col gap-3  text-white">
-          {inputProps.options.map((option) => (
-            <div
-              onClick={() =>
-                setValues((prevValues: ObjectProps) => ({
-                  ...prevValues,
-                  [inputProps.name]: option.value,
-                }))
-              }
-              className="border-b-[0.01px] p-2 cursor-pointer border-b-white"
-            >
-              {option.title}
+    <div onClick={clickHandler} className="flex items-center gap-4">
+      <Menu direction="rtl">
+        {({ isOpen }) => (
+          <>
+            <div className={`flex ${width} gap-2 flex-col`}>
+              {label && (
+                <label className="text-gray-700 font-medium text-base">
+                  {label}
+                </label>
+              )}
+              <MenuButton
+                isActive={isOpen}
+                as={Button}
+                // colorScheme="white"
+                bgColor={"white"}
+                _hover={{ bgColor: "white" }}
+                width={"100%"}
+                className="border flex gap-3 bg-white text-gray-800 border-slate-400"
+              >
+                <Flex justify="space-between" className="w-full" align="center">
+                  <Box> {menuValue}</Box>
+                  <Icon icon="ph:caret-down" flip="top" />
+                </Flex>
+
+                {/* {isOpen ?  : "Open"} */}
+              </MenuButton>
+
+              <div className="max-h-64 overflow-y-scroll">
+                {" "}
+                <MenuList className="max-h-64 overflow-y-scroll" w="100% ">
+                  {menus.map((menu) => (
+                    <MenuItem
+                      key={menu.value}
+                      onClick={() => {
+                        onClick(menu.value, menu.label);
+                      }}
+                    >
+                      {menu.label}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </div>
             </div>
-          ))}
-        </div>
-      )}
+          </>
+        )}
+      </Menu>
     </div>
   );
 };
