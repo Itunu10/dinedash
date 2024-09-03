@@ -93,7 +93,9 @@ export const handleAxiosError = (error: any) => {
 // };
 
 export const instance: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL:
+    import.meta.env.VITE_API_BASE_URL ||
+    "https://dinedash-api.onrender.com/api/v1",
 });
 
 instance.interceptors.request.use(
