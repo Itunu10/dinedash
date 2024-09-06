@@ -75,6 +75,7 @@ const Registerpage = () => {
               placeholder={data.placeholder}
               values={values}
               setValues={setValues}
+              type={data.type}
             />
           );
         })}

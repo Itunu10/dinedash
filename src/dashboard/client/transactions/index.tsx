@@ -1,23 +1,21 @@
 import React from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
-import {
-  transactionsData,
-  TransactionStatus,
-} from "../../../data/transactions-data";
 import DashboardHeaderText from "../../../components/header/dashboard";
-import { useGetnotificationsQuery } from "../../../features/notifications";
 import { SectionLoader } from "../../../components/loader";
 import { EmptySectionComponent } from "../../../components/placeholder/empty";
+import { useGettransactionsQuery } from "../../../features/transactions";
+import { ObjectProps } from "../../../types";
+import { formatDate, shortenText } from "../../../utils";
 
-const statusColors: Record<TransactionStatus, string> = {
-  Pending: "bg-yellow-200",
-  Completed: "bg-green-200",
-  Failed: "bg-red-200",
+const statusColors: Record<string, string> = {
+  pending: "bg-yellow-200",
+  completed: "bg-green-200",
+  failed: "bg-red-200",
   "In Progress": "bg-blue-200",
 };
 
 const Transactionspage: React.FC = () => {
-  const { data: transactions, isLoading } = useGetnotificationsQuery();
+  const { data: transactions, isLoading } = useGettransactionsQuery();
 
   return (
     <>
@@ -36,19 +34,22 @@ const Transactionspage: React.FC = () => {
           <Table variant="striped" className="w-full border border-gray-300">
             <Thead>
               <Tr>
-                <Th> Reference</Th>
                 <Th>Order ID</Th>
+                <Th>Payment Method</Th>
+
                 <Th>Amount</Th>
                 <Th>Status</Th>
                 <Th>Date</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {transactionsData.map((transaction) => (
-                <Tr key={transaction.transactionReference}>
-                  <Td>{transaction.transactionReference}</Td>
-                  <Td>{transaction.orderId}</Td>
-                  <Td>${transaction.amount.toFixed(2)}</Td>
+              {transactions?.data?.docs?.map((transaction: ObjectProps) => (
+                <Tr key={transaction?._id}>
+                  <Td>{shortenText(transaction?._id || "", 10)}</Td>
+                  <Td>{transaction?.paymentMethod}</Td>
+                  <Td>
+                    ${transaction?.amount && transaction?.amount?.toFixed(2)}
+                  </Td>
                   <Td>
                     <span
                       className={`px-2 py-1 rounded ${
@@ -58,7 +59,10 @@ const Transactionspage: React.FC = () => {
                       {transaction.status}
                     </span>
                   </Td>
-                  <Td>{new Date(transaction.date).toLocaleString()}</Td>
+                  <Td>
+                    {transaction?.createdAt &&
+                      formatDate(transaction?.createdAt)}
+                  </Td>
                 </Tr>
               ))}
             </Tbody>

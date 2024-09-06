@@ -69,6 +69,8 @@ export type ModalType = {
   isOpenAddMenu: boolean;
   isOpenDelete: boolean;
   isOpenRename: boolean;
+  isOpenMakeOrder: boolean;
+  isOpenApprovePayment: boolean;
 };
 
 export interface ModalContextProps {

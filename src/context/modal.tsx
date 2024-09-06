@@ -8,6 +8,8 @@ const initialState = {
     isOpenAddMenu: false,
     isOpenDelete: false,
     isOpenRename: false,
+    isOpenMakeOrder: false,
+    isOpenApprovePayment: false,
   },
   setModal: () => {},
 };

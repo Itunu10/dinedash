@@ -21,18 +21,18 @@ const ChartSection = () => {
       dataset: {
         source: [
           ["product", "Last 6 days", "Last Week"],
-          ["01", 10.8, 15],
-          ["02", 5, 15],
-          ["03", 5, 10],
-          ["04", 10, 5],
-          ["05", 10.8, 15],
-          ["06", 5, 15],
-          ["07", 5, 10],
-          ["08", 10, 5],
-          ["09", 10.8, 15],
-          ["10", 5, 15],
-          ["11", 5, 10],
-          ["12", 10, 5],
+          ["01", 15],
+          ["02", 15],
+          ["03", 10],
+          ["04", 5],
+          ["05", 15],
+          ["06", 15],
+          ["07", 10],
+          ["08", 5],
+          ["09", 15],
+          ["10", 15],
+          ["11", 10],
+          ["12", 5],
         ],
       },
       xAxis: {
@@ -179,7 +179,7 @@ const ChartSection = () => {
               <span className="text-primary-default">2.1% </span>vs last week
             </p>
             <p className="my-2 text-xs text-gray-400">
-              Sales from 1-12 Apr, 2023
+              Sales from 1-12 Sept, 2024
             </p>
           </div>
           <button className="text-sm text-primary-default p-2 rounded-md px-3 font-medium border self-start bg-gray-100 ">
@@ -211,7 +211,7 @@ const ChartSection = () => {
           <div className="flex flex-col gap-2">
             <h2 className="text-sm">Orders summary</h2>
 
-            <p className="my-2 text-xs text-gray-400">From 1-6 Jun, 2024</p>
+            <p className="my-2 text-xs text-gray-400">From 1-6 Sept, 2024</p>
           </div>
           <button className="text-sm text-primary-default p-2 rounded-md px-3 font-medium border self-start bg-gray-100 ">
             View Report

@@ -51,10 +51,10 @@ const Productpage = () => {
             {categories?.data?.docs?.map((item: ObjectProps) => {
               return (
                 <li
-                  onClick={() => setCategory(item?._id)}
+                  onClick={() => setCategory(item?.name)}
                   role="button"
                   className={` ${
-                    item?._id === category
+                    item?.name === category
                       ? "bg-primary-light text-black"
                       : "bg-primary-default text-white"
                   } capitalize tracking-wider hover:bg-primary-light hover:text-black duration-700 w-32 text-center   p-2 rounded-md`}

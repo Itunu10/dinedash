@@ -27,7 +27,7 @@ export const transactionApi = createApi({
 
     gettransactions: builder.query<any, string | void>({
       query: (query) => ({
-        url: `/transaction?${query}`,
+        url: `/transaction?_populate=createdBy&_populate=file&${query}`,
         method: "GET",
       }),
       providesTags: ["transaction"],
@@ -38,6 +38,24 @@ export const transactionApi = createApi({
         url: `/transaction/${credentials.id}`,
         method: "PUT",
         data: credentials,
+      }),
+      invalidatesTags: ["transaction"],
+    }),
+
+    approvetransaction: builder.mutation<AuthResponse, string>({
+      query: (id) => ({
+        url: `/transaction/approve/${id}`,
+        method: "PUT",
+        data: {},
+      }),
+      invalidatesTags: ["transaction"],
+    }),
+
+    canceltransaction: builder.mutation<AuthResponse, string>({
+      query: (id) => ({
+        url: `/transaction/cancel/${id}`,
+        method: "PUT",
+        data: {},
       }),
       invalidatesTags: ["transaction"],
     }),
@@ -66,3 +84,9 @@ export const useUpdatetransactionMutation =
 
 export const usedeletetransactionMutation =
   transactionApi.useDeletetransactionMutation as typeof transactionApi.endpoints.deletetransaction.useMutation;
+
+export const useCanceltransactionMutation =
+  transactionApi.useCanceltransactionMutation as typeof transactionApi.endpoints.canceltransaction.useMutation;
+
+export const useApprovetransactionMutation =
+  transactionApi.useApprovetransactionMutation as typeof transactionApi.endpoints.approvetransaction.useMutation;

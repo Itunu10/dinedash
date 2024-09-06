@@ -1,8 +1,15 @@
 import ReactECharts from "echarts-for-react";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { mostOrderedProductsCatergories } from "../../../data/analytics-data";
+import { useGetcategoriesQuery } from "../../../features/category";
+import { ObjectProps } from "../../../types";
+import { shortenText } from "../../../utils";
+import { useGetprofilesQuery } from "../../../features/auth";
 
 const StatisticsComponent = () => {
+  const { data: categories } = useGetcategoriesQuery();
+  const { data: users } = useGetprofilesQuery();
+  console.log(users);
+
   const getLineChartOptions = () => {
     return {
       title: {},
@@ -63,25 +70,24 @@ const StatisticsComponent = () => {
           </p>
         </div>
         <section className="flex flex-col gap-8 my-10">
-          {mostOrderedProductsCatergories.map((data) => {
+          {categories?.data?.docs?.slice(0, 5).map((data: ObjectProps) => {
             return (
-              <div className="flex items-center gap-2 justify-between ">
+              <div
+                key={data?._id}
+                className="flex items-center gap-2 justify-between "
+              >
                 <div className="flex items-center gap-5 ">
                   <span className="w-10  shadow-xl rounded-full overflow-hidden h-10">
                     <img
                       className="w-full h-full object-fit "
-                      src={data.image}
-                      alt={data.title}
+                      src={data?.image?.url}
+                      alt={data?.name}
                     />
                   </span>
-                  <span className="text-base font-light">{data.title}</span>
+                  <span className="text-base font-light">{data?.name}</span>
                 </div>
                 <span className="text-gray-700 font-light">
-                  {" "}
-                  {Intl.NumberFormat("NG", {
-                    style: "currency",
-                    currency: "NGN",
-                  }).format(data.value)}
+                  {shortenText(data?.description || "", 10)}
                 </span>
               </div>
             );
@@ -92,7 +98,7 @@ const StatisticsComponent = () => {
         <div className="flex justify-between">
           <div className="flex flex-col gap-2">
             <h2 className="text-sm">Total Customers</h2>
-            <h1 className="font-medium">1000</h1>
+            <h1 className="font-medium">{users?.data?.totalDocs}</h1>
             <p className="text-xs text-gray-400 flex items-center gap-2">
               {" "}
               <span className="text-red-500">
