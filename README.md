@@ -1,3 +1,40 @@
+# React App with Vite
+
+This project is a React application bootstrapped using Vite. The following instructions will guide you through setting up, running, and deploying this app.
+
+## Prerequisites
+
+Before you begin, ensure you have the following software installed on your local machine:
+
+- **Node.js** (Recommended version: 16 or higher)
+- **Git** for version control
+- **Visual Studio Code (VS Code)** for code editing. [Download here](https://code.visualstudio.com/download)
+
+## Installation Guide
+
+### 1. Clone the Repository
+
+To clone this repository to your local machine, follow these steps:
+
+```bash
+git clone https://github.com/itunu10/dinedash
+
+
+cd dinedash
+npm install
+# or
+yarn install
+
+
+npm run dev
+# or
+yarn dev
+
+
+
+
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
